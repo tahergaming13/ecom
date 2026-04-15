@@ -1,0 +1,22 @@
+{
+  "tracks": [
+    {
+      "id": "upbeat-1",
+      "name": "Upbeat Corporate",
+      "category": "Corporate",
+      "url": "https://example.com/audio/upbeat-1.mp3"
+    },
+    {
+      "id": "lofi-1",
+      "name": "Lofi Chill",
+      "category": "Chill",
+      "url": "https://example.com/audio/lofi-1.mp3"
+    },
+    {
+      "id": "electronic-1",
+      "name": "Trending Electronic",
+      "category": "Trending",
+      "url": "https://example.com/audio/electronic-1.mp3"
+    }
+  ]
+}

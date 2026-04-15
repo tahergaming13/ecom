@@ -1,0 +1,139 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  firstName String?
+  lastName  String?
+  imageUrl  String?
+  
+  projects         Project[]
+  marketAnalyses   MarketAnalysis[]
+  competitors      Competitor[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([clerkId])
+}
+
+model MarketAnalysis {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  niche     String
+  region    String
+  
+  pricePositioning PricePositioning?
+  trendingProducts TrendingProduct[]
+  videoIdeas       VideoIdea[]
+  hashtags         HashtagData[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Competitor {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  url       String
+  name      String
+  lastScraped DateTime?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PricePositioning {
+  id               String         @id @default(cuid())
+  marketAnalysisId String         @unique
+  marketAnalysis   MarketAnalysis @relation(fields: [marketAnalysisId], references: [id], onDelete: Cascade)
+  
+  minPrice         Float
+  maxPrice         Float
+  averagePrice     Float
+  userPrice        Float?
+  suggestedPrice   Float
+  recommendation   String
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TrendingProduct {
+  id               String         @id @default(cuid())
+  marketAnalysisId String
+  marketAnalysis   MarketAnalysis @relation(fields: [marketAnalysisId], references: [id], onDelete: Cascade)
+  
+  name        String
+  description String?
+  price       Float?
+  imageUrl    String?
+  engagement  String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VideoIdea {
+  id               String         @id @default(cuid())
+  marketAnalysisId String
+  marketAnalysis   MarketAnalysis @relation(fields: [marketAnalysisId], references: [id], onDelete: Cascade)
+  
+  hook        String
+  format      String
+  tone        String
+  platform    String
+  performance String
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model HashtagData {
+  id               String         @id @default(cuid())
+  marketAnalysisId String
+  marketAnalysis   MarketAnalysis @relation(fields: [marketAnalysisId], references: [id], onDelete: Cascade)
+  
+  platform String
+  tags     String[] // Array of strings for PostgreSQL
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  niche       String
+  status      String   @default("DRAFT") // DRAFT, GENERATING, COMPLETED, FAILED
+  
+  videoUrls   String[]
+  publishLogs PublishLog[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PublishLog {
+  id        String   @id @default(cuid())
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  platform  String
+  status    String   // QUEUED, POSTING, POSTED, FAILED
+  postUrl   String?
+  error     String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
