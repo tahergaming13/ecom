@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { auth } from '@clerk/nextjs/server';
 import { triggerN8nWorkflow } from '@/lib/n8n';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: Request) {
     try {
         const { userId } = await auth();

@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: Request) {
     try {
         // Here you would verify a shared secret or signature to ensure the request is from n8n
