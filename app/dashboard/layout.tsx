@@ -13,7 +13,7 @@ export default function DashboardLayout({
             </div>
             <main className="md:pl-64 h-full flex-1 min-h-screen">
                 <div className="sticky top-0 z-50 flex w-full items-center justify-end px-4 py-4 bg-background/50 backdrop-blur-md md:px-8 border-b">
-                    <UserButton afterSignOutUrl="/" />
+                    <UserButton />
                 </div>
                 <div className="p-4 md:p-8">
                     {children}
