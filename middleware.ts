@@ -7,10 +7,15 @@ const isProtectedRoute = createRouteMatcher([
   '/publish(.*)',
   '/history(.*)',
   '/settings(.*)',
-  '/api/(?!webhooks)(.*)', // protect all API routes except webhooks
+  '/api/(.*)',
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
+  // Exclude webhook routes from protection
+  if (req.nextUrl.pathname.startsWith('/api/webhooks')) {
+    return;
+  }
+
   if (isProtectedRoute(req)) {
     await auth.protect();
   }
